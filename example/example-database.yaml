@@ -29,4 +29,4 @@ spec:
         ) " >> /tmp/initdb.sql
       mysql -h$DB_HOST_MYDB -u$DB_USER_MYDB -p$DB_PASSWORD_MYDB mydb < /tmp/initdb.sql
       echo "database initialized !"
-    initDbImage: mefi5to/external-mysql-operator:latest
+    initDbImage: abernatek/external-mysql-operator:latest

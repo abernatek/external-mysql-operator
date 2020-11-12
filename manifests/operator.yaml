@@ -18,7 +18,7 @@ spec:
       serviceAccountName: external-mysql-operator-account
       containers:
       - name: external-mysql-operator
-        image: mefi5to/external-mysql-operator
+        image: abernatek/external-mysql-operator
         env:
           - name: OPERATOR_NAMESPACE
             valueFrom:
