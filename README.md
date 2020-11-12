@@ -1,6 +1,6 @@
 # external-mysql-operator
----
-**external-mysql-operator** exists to create / delete databases with users, and initialization process on existing external mysql instances
+
+**external-mysql-operator** exists to create / delete databases, manage users and handle initialization process on existing external mysql instances
 
 operator itself does not require any configuration
 
@@ -27,22 +27,22 @@ instance objects and their secrets should be placed in operator's namespace
    database object must have following properties:
    * **instance** - str - name of instance custom resource
    * **dropOnDelete** - boolean - tell operator if database should be deleted along with database custom resource
-   * **users** - array of objects 
+   * **users** - list of objects
       * **username** - str - username
-      * **password** - str - password ( not required - if not set operator will generate random password ), it will be placed in CR namespace secret named username-database-name
+      * **password** - str - password ( not required - if not set operator will generate random password and create secret with it in CR namespace )
       * **tables** - list of strings - tables to apply privileges, accepts '*'
-      * **privileges** - list of strings - SELECT, INSERT, UPDATE, ALL PRIVILEGES etc ...
+      * **privileges** - list of strings - eg. SELECT, INSERT, UPDATE, ALL PRIVILEGES
    * **initDb** - object - if exists, operator runs job with image and script defined below
-      * **initDbScript** - str - script used to initialize database ( bash, python etc... )
+      * **initDbScript** - str - script used to initialize database ( bash, python etc )
       * **initDbImage** - str - image used to run above script on
 
 operator will create database on desired instance with same name of defined database custom resource
 
 #### example
 ---
-to run locally just type `tilt up` and press `s` to stream logs
+to run locally install tilt ( https://docs.tilt.dev/install.html ) and just type `tilt up`,  press `s` to stream logs
 
-it will deploy operator along with mysql instance placed in `external-mysql-operator` namespace, it's also creates secret with root password for instance
+it will deploy operator along with mysql instance placed in `external-mysql-operator` namespace, it also creates secret with root password for instance ( used both for mysql deployment and instance CR )
 
 add instance custom resource by `kubectl apply -f example/example-instance.yaml`
 
@@ -50,7 +50,7 @@ add database custom resource by `kubectl apply -f example/example-database.yaml`
 
 check if database exists:
 
-`kubectl -n external-mysql-operator exec -it deployments/mysql -- mysql -umyuser -pqwerty -e 'show databases'`
+`kubectl -n external-mysql-operator exec -it deployments/mysql -- mysql -umyuser -ptestpassword -e 'show databases'`
 ```
 +--------------------+
 | Database           |
@@ -63,7 +63,7 @@ check if database exists:
 ```
 check if database is initialized by your script:
 
-`kubectl -n external-mysql-operator exec -it deployments/mysql -- mysql -umyuser -pqwerty mydb -e 'show tables'`
+`kubectl -n external-mysql-operator exec -it deployments/mysql -- mysql -umyuser -ptestpassword mydb -e 'show tables'`
 
 ```
 +----------------+
