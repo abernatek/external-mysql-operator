@@ -1,0 +1,3 @@
+kopf==0.28
+kubernetes==12.0.0
+mysql-connector==2.2.9

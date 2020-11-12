@@ -1,0 +1,32 @@
+apiVersion: mysql.getresponse.com/v1
+kind: database
+metadata:
+  name: mydb
+spec:
+  instance: mysql
+  dropOnDelete: true
+  users:
+  - username: "myuser"
+    password: "testpassword"
+    allowedHosts: "%"
+    tables: ["MyTable"]
+    privileges: ["SELECT"] 
+  - username: "admin"
+    allowedHosts: "%"
+    tables: ["*"]
+    privileges: ["ALL PRIVILEGES"] 
+  initDb:
+    initDbScript: |
+      #!/bin/bash
+      set -e
+      echo "
+      CREATE TABLE MyTable (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        firstname VARCHAR(30) NOT NULL,
+        lastname VARCHAR(30) NOT NULL,
+        email VARCHAR(50),
+        reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) " >> /tmp/initdb.sql
+      mysql -h$DB_HOST_MYDB -u$DB_USER_MYDB -p$DB_PASSWORD_MYDB mydb < /tmp/initdb.sql
+      echo "database initialized !"
+    initDbImage: mefi5to/external-mysql-operator:latest

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-mysql-operator
+  namespace: external-mysql-operator
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      application: external-mysql-operator
+  template:
+    metadata:
+      labels:
+        application: external-mysql-operator
+    spec:
+      serviceAccountName: external-mysql-operator-account
+      containers:
+      - name: external-mysql-operator
+        image: mefi5to/external-mysql-operator
+        env:
+          - name: OPERATOR_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace

@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- operator-namespace.yaml
+- operator-crd-database.yaml
+- operator-crd-instance.yaml
+- operator-rbac.yaml
+- operator.yaml
+
+namespace: external-mysql-operator

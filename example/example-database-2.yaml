@@ -1,0 +1,32 @@
+apiVersion: mysql.getresponse.com/v1
+kind: database
+metadata:
+  name: mydb2
+spec:
+  instance: mysql
+  dropOnDelete: true
+  users:
+  - username: "admin"
+    allowedHosts: "%"
+    tables: ["*"]
+    privileges: ["ALL PRIVILEGES"] 
+  initDb:
+    initDbScript: |
+      #!/usr/local/bin/python3
+      import mysql.connector
+      import os
+      conn = mysql.connector.connect(
+        user=os.getenv('DB_USER_MYDB2'), password=os.getenv('DB_PASSWORD_MYDB2'), host=os.getenv('DB_HOST_MYDB2'), database='mydb2'
+      )
+      cursor = conn.cursor()
+      cursor.execute("DROP TABLE IF EXISTS MyTable")
+      sql ='''CREATE TABLE MyTable (
+        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        firstname VARCHAR(30) NOT NULL,
+        lastname VARCHAR(30) NOT NULL,
+        email VARCHAR(50),
+        reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP )
+      '''
+      cursor.execute(sql)
+      conn.close()
+    initDbImage: mefi5to/external-mysql-operator:latest

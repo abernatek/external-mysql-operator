@@ -1,0 +1,9 @@
+apiVersion: mysql.getresponse.com/v1
+kind: instance
+metadata:
+  name: mysql
+  namespace: external-mysql-operator
+spec:
+  address: mysql.external-mysql-operator.svc.cluster.local
+  port: 3306
+  secretName: mysql-pass
