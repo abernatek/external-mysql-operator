@@ -2,6 +2,8 @@
 
 **external-mysql-operator** exists to create / delete databases, manage users and handle initialization process on existing external mysql instances
 
+it was written with kopf ( https://github.com/nolar/kopf )
+
 operator itself does not require any configuration
 
 it is configurable by two custom resources:
@@ -69,7 +71,7 @@ check if database is initialized by your script:
 +----------------+
 | Tables_in_mydb |
 +----------------+
-| MyTable       |
+| MyTable        |
 +----------------+
 ```
 
