@@ -19,6 +19,7 @@ rules:
   - apiGroups:
       - ""
     resources:
+      - events
       - services
       - secrets
       - configmaps
