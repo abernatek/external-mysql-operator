@@ -28,6 +28,7 @@ rules:
       - batch
     resources:
       - jobs
+      - jobs/status
     verbs: ["*"]
 ---
 kind: ClusterRoleBinding

@@ -18,8 +18,8 @@ instance object must have following properties:
    along with instance object we have to create secret with user who is able to **create** databases and have **grant option** on instance
 
    eg.
-   `CREATE USER 'superuser'@'192.168.0.0/24' IDENTIFIED BY 'testpassword';`
-   `GRANT CREATE, DROP ON *.* TO 'superuser'@'192.168.0.0/24' WITH GRANT OPTION;`
+   `CREATE USER 'superuser'@'%' IDENTIFIED BY 'testpassword';`
+   `GRANT ALL PRIVILEGES ON *.* TO 'superuser'@'%' WITH GRANT OPTION;`
 
 instance secret should have two k/vs:
    - **INSTANCE_USER**: base64
